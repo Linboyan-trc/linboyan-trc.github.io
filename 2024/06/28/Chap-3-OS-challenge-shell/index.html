@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Toryn">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2024/06/28/chap-3-os-challenge-shell/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="实验内容 Shell 挑战性任务 本次 Lab6 挑战性任务需要同学们在 MOS 原有的 shell(mosh) 上实现新的功能，该任务会提供若干任务，完成所有任务后即可参加自动化评测获取挑战性任务分数。    实现不带.b后缀指令 实现指令条件执行 实现更多指令 实现反引号 实现注释功能 实现历史指令 实现一行多指令 实现追加重定向 实现引号支持 实现前后台任务管理  功能实现详解实现不带.b后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chap.3 OS-挑战性任务shell">
+<meta property="og:url" content="http://example.com/2024/06/28/Chap-3-OS-challenge-shell/index.html">
+<meta property="og:site_name" content="no-use">
+<meta property="og:description" content="实验内容 Shell 挑战性任务 本次 Lab6 挑战性任务需要同学们在 MOS 原有的 shell(mosh) 上实现新的功能，该任务会提供若干任务，完成所有任务后即可参加自动化评测获取挑战性任务分数。    实现不带.b后缀指令 实现指令条件执行 实现更多指令 实现反引号 实现注释功能 实现历史指令 实现一行多指令 实现追加重定向 实现引号支持 实现前后台任务管理  功能实现详解实现不带.b后">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-28T01:59:54.000Z">
+<meta property="article:modified_time" content="2024-06-28T02:46:31.709Z">
+<meta property="article:author" content="no-use">
+<meta property="article:tag" content="OS">
+<meta name="twitter:card" content="summary">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Chap.3 OS-挑战性任务shell -
+        
+        Toryn&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/background-light.jpg","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/background-light.jpg","dark":"/images/background-dark.jpg"},"title":"Hi,I'm Toryn","subtitle":{"text":["素?","惹.","尊嘟假嘟o.O?","天啦噜!"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":"enable","links":{"github":"https://github.com/Linboyan-trc","bilibili":"https://space.bilibili.com/17761979","instagram":"https://www.instagram.com/linbaiyan1103","email":"1584340372@qq.com"},"qrs":{"weixin":"/images/wxQRCode.jpg"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/toryn-favicon.png">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Toryn&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        ARCHIVES
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/tags"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-tags"></i>
+                                        
+                                        TAGS
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                ARCHIVES
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/tags"  >
+                             
+                                
+                                    <i class="fa-regular fa-tags"></i>
+                                
+                                TAGS
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                
+                
+                <img src="/images/cover-snow3.png" alt="Chap.3 OS-挑战性任务shell" class="max-w-none"/>
+                
+                <h1 class="article-title-cover">Chap.3 OS-挑战性任务shell</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/toryn-avatar.jpg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Toryn</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-06-28 09:59:54</span>
+        <span class="mobile">2024-06-28 09:59:54</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-06-28 10:46:31</span>
+            <span class="mobile">2024-06-28 10:46:31</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/OS/">OS</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <h2 id="实验内容"><a href="#实验内容" class="headerlink" title="实验内容"></a>实验内容</h2><blockquote>
+<h3 id="Shell-挑战性任务"><a href="#Shell-挑战性任务" class="headerlink" title="Shell 挑战性任务"></a>Shell 挑战性任务</h3><ul>
+<li>本次 Lab6 挑战性任务需要同学们在 MOS 原有的 shell(mosh) 上实现新的功能，该任务会提供若干任务，完成所有任务后即可参加自动化评测获取挑战性任务分数。</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>实现不带.b后缀指令</strong></li>
+<li><strong>实现指令条件执行</strong></li>
+<li><strong>实现更多指令</strong></li>
+<li><strong>实现反引号</strong></li>
+<li><strong>实现注释功能</strong></li>
+<li><strong>实现历史指令</strong></li>
+<li><strong>实现一行多指令</strong></li>
+<li><strong>实现追加重定向</strong></li>
+<li><strong>实现引号支持</strong></li>
+<li><strong>实现前后台任务管理</strong></li>
+</ul>
+<h2 id="功能实现详解"><a href="#功能实现详解" class="headerlink" title="功能实现详解"></a>功能实现详解</h2><h3 id="实现不带-b后缀指令"><a href="#实现不带-b后缀指令" class="headerlink" title="实现不带.b后缀指令"></a>实现不带.b后缀指令</h3><blockquote>
+<p>你需要实现不带<code>.b</code>后缀的指令，但仍需兼容带有 <code>.b</code> 后缀的指令，如 <code>ls</code> 与 <code>ls.b</code> 都应能够正确列出当前目录下的文件。</p>
+</blockquote>
+<ul>
+<li>对于实现不带.b的指令:</li>
+<li>指令都是通过<code>sh.c</code>中的<code>spawn(prog, argv)</code>来实现的<ul>
+<li><code>prog</code>就是指向程序的字符串，比如<code>&quot;ls.b&quot;, &quot;echo.b&quot;</code></li>
+<li>因此如果<code>prog</code>是<code>&quot;ls&quot;</code>或者<code>&quot;echo&quot;</code>等不带.b后缀的字符串的话</li>
+<li>就新建一个字符串</li>
+<li>然后把<code>prog</code>拷贝给<code>prog_n</code></li>
+<li>然后给<code>prog_n</code>加上”.b”后缀</li>
+<li>然后<code>fd = open(prog_n, O_RDONLY)</code>就可以打开这个程序的二进制文件并且加载了  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//////////////// 1. ls不带.b /////////////////</span></span><br><span class="line"><span class="type">char</span> prog_n[<span class="number">1024</span>];</span><br><span class="line"><span class="built_in">strcpy</span>(prog_n, prog);</span><br><span class="line"><span class="type">int</span> mylen1 = <span class="built_in">strlen</span>(prog_n);</span><br><span class="line"><span class="type">char</span> myendchar = prog_n[mylen1<span class="number">-1</span>];</span><br><span class="line"><span class="keyword">if</span> (myendchar != <span class="string">&#x27;b&#x27;</span>) &#123;</span><br><span class="line">    prog_n[mylen1] = <span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">    prog_n[mylen1+<span class="number">1</span>] = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line">    prog_n[mylen1+<span class="number">2</span>] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/////////////////////////////////////////////</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Step 1: Open the file &#x27;prog&#x27; (the path of the program).</span></span><br><span class="line"><span class="comment">// Return the error if &#x27;open&#x27; fails.</span></span><br><span class="line"><span class="type">int</span> fd;</span><br><span class="line"><span class="keyword">if</span> ((fd = open(prog_n, O_RDONLY)) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> fd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+</ul>
+<h3 id="实现指令条件执行"><a href="#实现指令条件执行" class="headerlink" title="实现指令条件执行"></a>实现指令条件执行</h3><blockquote>
+<p>你需要实现 Linux shell 中的 <code>&amp;&amp;</code> 与 <code>||</code>。 对于 <code>command1 &amp;&amp; command2</code>，<code>command2</code> 被执行当且仅当 <code>command1</code> 返回 0；对于 <code>command1 || command2</code>，<code>command2</code> 被执行当且仅当 <code>command1</code> 返回非 0 值。</p>
+</blockquote>
+<blockquote>
+<p>注: 评测中保证不出现括号。并且需要注意的是，在 bash 中 <code>&amp;&amp;</code> 与 <code>||</code> 的优先级相同，按照从左到右的顺序求值。<br>例如 <code>cmd1 || cmd2 &amp;&amp; cmd3</code>，若 <code>cmd1</code> 返回 0，则 <code>cmd1</code> 执行后 <code>cmd2</code> 不会被执行，<code>cmd3</code> 会被执行；若 <code>cmd1</code> 返回非 0 且 <code>cmd2</code> 返回非 0，则 <code>cmd3</code> 将不会被执行。<br>提示：你可能需要修改 MOS 中对用户进程 <code>exit</code> 的实现，使其能够返回值。</p>
+</blockquote>
+<ul>
+<li><strong>首先要清楚shell的调用流程</strong><ul>
+<li><p>首先在<code>user/init.c</code>中<code>spwanl(&quot;sh.b&quot;,&quot;sh&quot;,NULL)</code>,开启了运行sh.b程序的进程</p>
+</li>
+<li><p>然后sh.b中的<code>main()</code>函数负责不断从标准输入逐行读取输入的指令到<code>char *buf</code></p>
+</li>
+<li><p>然后使用<code>runcmd(buf)</code>来运行指令</p>
+</li>
+<li><p><code>runcmd(buf)</code>中调用<code>parsecmd(argv, &amp;rightpipe)</code>来解析指令</p>
+</li>
+<li><p><code>parsecmd(argv, &amp;rightpipe)</code>中不断循环调用<code>gettoken()</code>来解析命令</p>
+</li>
+<li><p><code>gettoken()</code>实际上调用<code>_gettoken()</code>来判断每次解析到的单词是是什么类型</p>
+<ul>
+<li>一共有三种类型<ul>
+<li><code>0:</code> 代表解析解结束</li>
+<li><code>t:</code> 代表解析到特殊字符<ul>
+<li>这里对于<code>&lt;,|,&gt;,&amp;,;,(,)</code>直接返回ascii码就可以</li>
+<li>对于<code>||</code>和<code>&amp;&amp;</code>,也选择在<code>_gettoken()</code>中完成<ul>
+<li>具体方式是识别到<code>|</code>或者<code>&amp;</code>的时候，再多走一步判断下一个字符是不是<code>|</code>或者<code>&amp;</code></li>
+<li>对于<code>||</code>,我们返回1</li>
+<li>对于<code>&amp;&amp;</code>,我们返回2</li>
+<li>因为在ascii码表中这两个值被保留  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">///////////////// 2. 判断||和&amp;&amp; /////////////////</span></span><br><span class="line"><span class="keyword">if</span> (t == <span class="string">&#x27;|&#x27;</span> &amp;&amp; (*s) == <span class="string">&#x27;|&#x27;</span>) &#123;</span><br><span class="line">    t = <span class="number">1</span>;</span><br><span class="line">    *p1 = s;</span><br><span class="line">    *s++ = <span class="number">0</span>;</span><br><span class="line">    *p2 = s;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (t == <span class="string">&#x27;&amp;&#x27;</span> &amp;&amp; (*s) == <span class="string">&#x27;&amp;&#x27;</span>) &#123;</span><br><span class="line">    t = <span class="number">2</span>;</span><br><span class="line">    *p1 = s;</span><br><span class="line">    *s++ = <span class="number">0</span>;</span><br><span class="line">    *p2 = s;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (t == <span class="string">&#x27;&gt;&#x27;</span> &amp;&amp; (*s) == <span class="string">&#x27;&gt;&#x27;</span>) &#123;</span><br><span class="line">    t = <span class="number">3</span>;</span><br><span class="line">    *p1 = s;</span><br><span class="line">    *s++ = <span class="number">0</span>;</span><br><span class="line">    *p2 = s;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">///////////////////////////////////////////////</span></span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>&#39;w&#39;:</code> 代表解析到一个单词</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>然后再<code>parsecmd()</code>中增加能解析指令的case情况</p>
+<ul>
+<li><code>case 1:</code> 代表读取到了<code>||</code></li>
+<li><code>case 2:</code> 代表读取到了<code>&amp;&amp;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>然后弄清楚管道的进程创建</strong><ul>
+<li><p>管道命令 <code>ls | cat</code></p>
+</li>
+<li><p>是由<code>sh.b</code>先<code>fork()</code>出一个子进程</p>
+<ul>
+<li>子进程去进一步<code>parsecmd()</code>,从而spawn出<code>cat</code>命令</li>
+<li><code>sh.b</code>返回原进程，<code>spawn</code>出<code>ls</code>命令</li>
+<li>然后通过管道开关读写端实现<code>ls</code>把输出传递给<code>cat</code></li>
+</ul>
+</li>
+<li><p>条件指令可以采用一样的形式，只不是管道中，越靠前的指令由父进程创建，越靠后的指令由子进程创建</p>
+</li>
+<li><p>条件指令中我们需要获取靠前指令的执行结果，并且返回给后面的指令，因为前面的指令要用子进程创建，然后子进程给父进程发送信息，父进程再决定后面的指令可不可以执行</p>
+</li>
+<li><p>首先<code>fork()</code>出一个子进程，设置<code>need_ipc_send</code>,然后返回</p>
+<ul>
+<li>去<code>spawn</code>一个命令</li>
+<li>这个命令通过修改<code>libos.c</code>中的<code>libmain</code>,给子进程发送了直接结果的信息</li>
+<li>然后子进程通过<code>if(child&gt;0)&#123; ipc_recv(0,0,0); &#125;</code>来等待<code>spawn</code>出的命令发送信息</li>
+<li>等到了之后，进入<code>if(need_ipc_send)</code>来给父进程发送信息</li>
+</ul>
+</li>
+<li><p>然后回到<code>parsecmd()</code>中<code>case 2</code>的父进程分支</p>
+<ul>
+<li><p>父进程在此处<code>ipc_recv(0,0,0)</code>等待子进程发送信息</p>
+</li>
+<li><p>结合<code>env-&gt;env_ipc_value</code>和现在是<code>case 1</code> 还是<code>case 2</code> 来决定是否要跳过下一个指令，直到找到下一个 <code>case 1</code> 或者 <code>case 2</code></p>
+<ul>
+<li><p>跳过的方法就是在case内部调用<code>c = gettoken(0,&amp;t) != 0</code>, 循环直到有<code>c == 1</code> 或者 <code>c == 2</code></p>
+</li>
+<li><p>然后设置<code>need_ipc_recv</code>为<code>1</code>，这样返回<code>runcmd</code>的时候，才会进入结合<code>condi_or</code>或者<code>condi_and</code>来判断是否可以<code>spawn</code>这个指令</p>
+</li>
+<li><p>然后设置<code>condi_or</code>或者<code>condi_and</code>其中一个为<code>1</code></p>
+</li>
+<li><p>然后继续<code>parsecmd()</code></p>
+</li>
+<li><p>这个时候往下走一层</p>
+</li>
+<li><p>如果这一层只有一条指令，就会直接在<code>case &#39;w&#39;</code>中返回，最终指令由父进程创建并执行</p>
+</li>
+<li><p>如果这一层有两条指令，就会进入<code>case 2</code>，然后<code>fork()</code>新的子进程去执行中间那条指令，父进程继续<code>ipc_recv(0,0,0)</code>等待</p>
+</li>
+<li><p>而且由于跳过了不允许执行的指令，因此有子进程的<code>spawn</code>出来的都是可以执行的指令，这个时候这些指令执行的<code>返回值==0或者!=0</code>再由子进程发送给父进程</p>
+</li>
+<li><p>父进程再决定下一层的指令是创建还是跳过</p>
+  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *argv[MAXARGS];</span><br><span class="line">    <span class="type">int</span> rightpipe = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> need_ipc_send = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> need_ipc_recv = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> condi_or = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> condi_and = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> bg = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> backquote = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> backpipe = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> argc = parsecmd(argv, &amp;rightpipe, &amp;need_ipc_send, &amp;need_ipc_recv, &amp;condi_or, &amp;condi_and, &amp;bg, &amp;backquote, &amp;backpipe);</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> child = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">if</span> (need_ipc_recv != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (condi_or &amp;&amp; env-&gt;env_ipc_value != <span class="number">0</span>) &#123;</span><br><span class="line">            child = spawn(argv[<span class="number">0</span>], argv);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (condi_and &amp;&amp; env-&gt;env_ipc_value == <span class="number">0</span>) &#123;</span><br><span class="line">            child = spawn(argv[<span class="number">0</span>], argv);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        child = spawn(argv[<span class="number">0</span>], argv);</span><br><span class="line">        <span class="comment">// debugf(&quot;创建echo子进程:%x\n&quot;,child);</span></span><br><span class="line">        <span class="keyword">if</span> (bg == <span class="number">2</span>) &#123;</span><br><span class="line">            syscall_add_jobs(child,news);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="实现更多指令"><a href="#实现更多指令" class="headerlink" title="实现更多指令"></a>实现更多指令</h3><blockquote>
+<p>你需要实现 <code>touch，mkdir，rm</code> 指令，只需要考虑如下情形：</p>
+</blockquote>
+<ul>
+<li><p><code>touch</code>:</p>
+<blockquote>
+<p><code>touch &lt;file&gt;</code>：创建空文件 <code>file</code>，若文件存在则放弃创建，正常退出无输出。 若创建文件的父目录不存在则输出 <code>touch: cannot touch &#39;&lt;file&gt;&#39;: No such file or directory</code>。 例如 <code>touch nonexistent/dir/a.txt</code> 时应输出 <code>touch: cannot touch &#39;nonexistent/dir/a.txt&#39;: No such file or directory</code>。</p>
+</blockquote>
+</li>
+<li><p><code>mkdir</code>:</p>
+<blockquote>
+<p><code>mkdir &lt;dir&gt;</code>：若目录已存在则输出<code> mkdir: cannot create directory &#39;&lt;dir&gt;&#39;: File exists</code>，若创建目录的父目录不存在则输出 <code>mkdir: cannot create directory &#39;&lt;dir&gt;&#39;: No such file or directory</code>，否则正常创建目录。<br><code>mkdir -p &lt;dir&gt;</code>：当使用 <code>-p</code> 选项时忽略错误，若目录已存在则直接退出，若创建目录的父目录不存在则递归创建目录。</p>
+</blockquote>
+</li>
+<li><p><code>rm</code>:</p>
+<blockquote>
+<p><code>rm &lt;file&gt;</code>：若文件存在则删除 <code>&lt;file&gt;</code>，否则输出<code> rm: cannot remove &#39;&lt;file&gt;&#39;: No such file or directory</code>。<br><code>rm &lt;dir&gt;</code>：命令行输出: <code>rm: cannot remove &#39;&lt;dir&gt;&#39;: Is a directory</code>。<br><code>rm -r &lt;dir&gt;|&lt;file&gt;</code>：若文件或文件夹存在则删除，否则输出 <code>rm: cannot remove &#39;&lt;dir&gt;|&lt;file&gt;&#39;: No such file or directory</code>。<br><code>rm -rf &lt;dir&gt;|&lt;file&gt;</code>：如果对应文件或文件夹存在则删除，否则直接退出。</p>
+</blockquote>
+</li>
+<li><p><strong>touch</strong></p>
+<ul>
+<li>先调用<code>user/lib/file.c</code>中的<code>open(path, O_RDONLY)</code>打开文件，如果打开成功就说明文件已经存在，退出</li>
+<li>如果打开失败，就再次调用<code>open(path, O_CREAT)</code>来创建这个文件，如果创建失败就打印提示信息  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (argc != <span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        debugf(<span class="string">&quot;touch:缺少文件名\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> fd = open(argv[<span class="number">1</span>], O_RDONLY);</span><br><span class="line">    <span class="keyword">if</span> (fd &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        debugf(<span class="string">&quot;touch:文件已存在\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fd = open(argv[<span class="number">1</span>], O_CREAT);</span><br><span class="line">    <span class="keyword">if</span> (fd &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;touch: cannot touch \&#x27;%s\&#x27;: No such file or directory\n&quot;</span>,argv[<span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    close(fd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+<li><p><strong>mkdir</strong></p>
+<ul>
+<li><strong>首先可能的指令类型有两种</strong><ul>
+<li><code>mkdir x</code></li>
+<li><code>mkdir -p x</code></li>
+<li><code>-p</code>表示忽略错误信息，包括目录已存在时不打印提示信息，路劲不存在时递归创建路径</li>
+</ul>
+</li>
+<li><strong>首先判断<code>argv[1]是不是&quot;-p\0&quot;</code></strong><ul>
+<li>然后使用<code>stat(path, &amp;stat_buf)</code>函数判断目录是否已经存在<ul>
+<li>已经存在 + 无<code>-p</code>选项：打印提示信息</li>
+<li>已经存在 + <code>-p</code>选项：退出</li>
+</ul>
+</li>
+<li>如果不存在<ul>
+<li><p>先直接<code>mkdir(path)</code></p>
+</li>
+<li><p><code>mkdir(path)</code>函数是自己写的，在<code>user/lib/file.c</code>中，并且需要在<code>user/include/lib.h</code>中声明</p>
+</li>
+<li><p>这个函数就是调用<code>file.c中的open()</code>函数<code>open(path, O_MKDIR)</code>了一下</p>
+<ul>
+<li>实际上是与文件系统服务进程通信，调用了<code>fs/serv.c</code>中的<code>serve_open()</code>函数</li>
+<li>首先模仿<code>O_CREAT</code>的方法，直接复制一份，然后改成<code>O_MKDIR</code></li>
+<li>然后创建完成后，如果是<code>O_MKDIR</code>，就要把<code>f-&gt;f_type</code>赋值为<code>FTYPE_DIR</code></li>
+</ul>
+</li>
+<li><p>这样可以完成单层目录的创建</p>
+</li>
+<li><p>因为<code>serv.c</code>中的<code>serve_open()</code>中调用了<code>fs/fs.c的file_create()</code>，<code>file_create()</code>调用了<code>walk_path()</code></p>
+</li>
+<li><p>而<code>walk_path()</code>的原理是，如果路径中有一环不存在就会返回负值，因此文件系统服务进程自带的<code>file_create()</code>不能完成递归创建目录</p>
+</li>
+<li><p>所以需要自己写一个<code>descend_mkdir()</code>函数</p>
+</li>
+<li><p>该函数的递归出口是 <code>fd = mkdir(path)</code>, 如果 <code>fd &gt;= 0</code> 就是创建成功，说明此时在创建缺失路径的最顶层</p>
+</li>
+<li><p>如果 <code>fd &lt; 0</code>，就要去除最底层的目录，然后调用<code>descend_mkdir()</code>创建他的上一级目录，然后再重新调用<code>descend_mkdir()</code>创建自己</p>
+</li>
+<li><p>最后根据有没有<code>-p</code>选项来选择在创建失败的时候是否要递归创建目录</p>
+  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">descend_mkdir</span><span class="params">(<span class="type">char</span> *path)</span> &#123;</span><br><span class="line">    <span class="type">int</span> fd = mkdir(path);</span><br><span class="line">    <span class="keyword">if</span> (fd &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (fd &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 1. find last &#x27;\&#x27;</span></span><br><span class="line">        <span class="type">char</span> newpath[<span class="number">1024</span>];</span><br><span class="line">        <span class="built_in">strcpy</span>(newpath, path);</span><br><span class="line">        <span class="type">int</span> len = <span class="built_in">strlen</span>(newpath);</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = len - <span class="number">1</span>;i &gt;= <span class="number">0</span>;i--) &#123;</span><br><span class="line">            <span class="keyword">if</span>(newpath[i] == <span class="number">47</span>) &#123;</span><br><span class="line">                newpath[i] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 2. create father</span></span><br><span class="line">        descend_mkdir(newpath);</span><br><span class="line">        <span class="comment">// 3. create self</span></span><br><span class="line">        descend_mkdir(path);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>rm</strong></p>
+<ul>
+<li>首先根据可能的情况<ul>
+<li><code>rm x</code></li>
+<li><code>rm -r x</code></li>
+<li><code>rm -rf x</code></li>
+<li>判断是否有<code>-r</code>或者<code>-rf</code>，然后对没有选项，有<code>-r</code>选项，有<code>-rf</code>选项分别处理</li>
+</ul>
+</li>
+<li>有<code>-r</code>选项<ul>
+<li><code>user/lib/file.c</code>中的<code>remove(path)</code>函数实际上与文件系统服务进程进行通信，然后调用<code>fs/fs.c</code>中的<code>file_remove()</code>函数</li>
+<li>该函数可以删除文件，也可以删除目录</li>
+<li>因此直接调用<code>remove(argv[2])</code>即可实现递归删除</li>
+<li>如果删除失败则打印提示信息  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (isr) &#123;</span><br><span class="line">        r = remove(argv[<span class="number">2</span>]);</span><br><span class="line">        <span class="keyword">if</span> (r &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;rm: cannot remove \&#x27;%s\&#x27;: No such file or directory\n&quot;</span>,argv[<span class="number">2</span>]);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; </span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+<li>有<code>-rf</code>选项<ul>
+<li>直接删除即可</li>
+<li>无论成功失败都不打印提示信息  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (isrf) &#123;</span><br><span class="line">        remove(argv[<span class="number">2</span>]);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+<li>没有选项<ul>
+<li>要先判断需要删除的是否是目录</li>
+<li>首先<code>fd = open (path, O_RDONLY)</code>打开该文件，获取文件描述符下标</li>
+<li>然后<code>fd_lookup(fd, &amp;fd_)</code>寻找文件描述符，需要引入<code>&lt;fd.h&gt;</code>库</li>
+<li>然后把<code>&amp;fd_</code>强制转换为<code>struct Filefd *ffd;</code></li>
+<li>然后获取<code>ffd-&gt;f_file.f_type</code>，判断<code>ffd-&gt;f_file.f_type == FTYPE_DIR</code></li>
+<li>如果是目录就删除失败，打印提示信息</li>
+<li>否则就说明是文件类型，删除即可，删除失败打印提示信息  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (argc != <span class="number">2</span>) &#123;</span><br><span class="line">            debugf(<span class="string">&quot;rm:缺少文件名\n&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// struct Stat stat_buf;</span></span><br><span class="line">        <span class="comment">// if (stat(argv[1], &amp;stat_buf) &gt;= 0) &#123;</span></span><br><span class="line">        <span class="comment">// 	printf(&quot;rm: cannot remove \&#x27;%s\&#x27;: Is a directory\n&quot;, argv[1]);</span></span><br><span class="line">        <span class="comment">// 	return -1;</span></span><br><span class="line">        <span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> fd = open(argv[<span class="number">1</span>],O_RDONLY);</span><br><span class="line">        <span class="keyword">if</span> (fd &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">Fd</span> *<span class="title">fd_</span>;</span></span><br><span class="line">            fd_lookup(fd, &amp;fd_);</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">Filefd</span> *<span class="title">fdd</span> =</span> (<span class="keyword">struct</span> Filefd*)fd_;</span><br><span class="line">            <span class="keyword">if</span> (fdd-&gt;f_file.f_type == FTYPE_DIR) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;rm: cannot remove \&#x27;%s\&#x27;: Is a directory\n&quot;</span>, argv[<span class="number">1</span>]);</span><br><span class="line">                <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        r = remove(argv[<span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">if</span> (r &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;rm: cannot remove \&#x27;%s\&#x27;: No such file or directory\n&quot;</span>,argv[<span class="number">1</span>]);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="实现反引号"><a href="#实现反引号" class="headerlink" title="实现反引号"></a>实现反引号</h3><blockquote>
+<p>你需要使用反引号实现指令替换。只需要考虑 <code>echo</code> 进行的输出，你需要将反引号内指令执行的所有标准输出替换为 <code>echo</code> 的参数。例如：<br><code>echo `ls | cat | cat | cat`</code></p>
+</blockquote>
+<ul>
+<li>识别反引号</li>
+<li>子进程执行反引号内指令<ul>
+<li>传递管道</li>
+<li>为<code>backquote</code>而且<code>rightpipe == 0</code>的时候再复制<code>dup(p_quote[1],1)</code>,把写端从<code>stdout</code>改成<code>p_quote[1]</code>  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// parsecmd()中</span></span><br><span class="line"><span class="keyword">if</span> ((r = fork()) == <span class="number">0</span>) &#123;</span><br><span class="line">    *backquote = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> parsecmd(argv, rightpipe, need_ipc_send, need_ipc_recv, condi_or, condi_and, bg, backquote, &amp;p_quote[<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// runcmd()中</span></span><br><span class="line"><span class="keyword">if</span> (child &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">/* code */</span></span><br><span class="line">    <span class="comment">/////////////////// backquote ///////////////////</span></span><br><span class="line">    <span class="keyword">if</span> (rightpipe == <span class="number">0</span> &amp;&amp; backquote == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="comment">// 2. 管道</span></span><br><span class="line">            dup(backpipe, <span class="number">1</span>);</span><br><span class="line">            close(backpipe);</span><br><span class="line">            close(backpipe);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/////////////////////////////////////////////////</span></span><br><span class="line">    <span class="comment">/* code */</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">/* code */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+<li>父进程读取执行结果<ul>
+<li>父进程从<code>dup(p_quote[0],0)</code>把从<code>stdin</code>读改成从<code>p_quote[0]</code>读</li>
+<li>读取的时候因为管道只有32字节</li>
+<li>因此需要使用<code>while(1) &#123; read(p_quote[0], tempbuf + i_buf, 1024 - i_buf); &#125;</code>一段一段的读取，不能使用<code>read()</code>一次性读完</li>
+<li>读完之后作为<code>argv[argc++] = tempbuf</code>加入到参数中</li>
+<li>最后还要使父进程的<code>gettoken</code>走到下一个<code>&#39;`&#39;</code>  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 1. 父进程读取执行结果，加入到argv</span></span><br><span class="line">    close(p_quote[<span class="number">1</span>]);</span><br><span class="line">    <span class="type">char</span> tempbuf[<span class="number">1024</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="type">int</span> i_buf = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="type">int</span> len = read(p_quote[<span class="number">0</span>], tempbuf + i_buf, <span class="number">1024</span> - i_buf);</span><br><span class="line">        <span class="keyword">if</span> (len &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        i_buf += len;</span><br><span class="line">    &#125;</span><br><span class="line">    tempbuf[i_buf] = <span class="number">0</span>;</span><br><span class="line">    close(p_quote[<span class="number">0</span>]);</span><br><span class="line">    <span class="comment">// 2. 先等待子进程完成</span></span><br><span class="line">    wait(r);</span><br><span class="line">    argv[argc++] = tempbuf;</span><br><span class="line">    <span class="comment">// 3. 跳到下一个&#x27;`&#x27;</span></span><br><span class="line">    <span class="keyword">while</span>((c = gettoken(<span class="number">0</span>, &amp;t)) != <span class="string">&#x27;`&#x27;</span>) &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+</ul>
+<h3 id="实现注释功能"><a href="#实现注释功能" class="headerlink" title="实现注释功能"></a>实现注释功能</h3><blockquote>
+<p>你需要使用 <code>#</code> 实现注释功能，例如 <code>ls | cat # this is a comment meow</code>，<code>ls | cat</code> 会被正确执行，而后面的注释则会被抛弃。</p>
+</blockquote>
+<ul>
+<li>在<code>parsecmd</code>中，识别到<code>case #</code>直接结束指令解析并返回即可<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="string">&#x27;#&#x27;</span>:</span><br><span class="line">    <span class="keyword">return</span> argc;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<h3 id="实现历史指令"><a href="#实现历史指令" class="headerlink" title="实现历史指令"></a>实现历史指令</h3><blockquote>
+<p>你需要实现 <code>shell</code> 中保存历史指令的功能，可以通过 <code>Up</code> 和 <code>Down</code> 选择所保存的指令并执行。你需要将历史指令保存到根目录的 <code>.mosh_history</code> 文件中（一条指令一行），为了评测的方便，我们设定 <code>$HISTFILESIZE=20</code>（bash 中默认为 500），即在 <code>.mosh_history</code> 中至多保存最近的 20 条指令。你还需要支持通过 <code>history</code> 命令输出 <code>.mosh_history</code> 文件中的内容。</p>
+</blockquote>
+<blockquote>
+<p>注：在 bash 中，<code>history</code> 为 <code>shell built-in command</code>，我们规定需要将 <code>history</code> 实现为 <code>built-in command</code>。</p>
+</blockquote>
+<blockquote>
+<p>你需要将当前执行的指令先存入 <code>.mosh_history</code> 中，例如：</p>
+</blockquote>
+<blockquote>
+<p><code>echo `ls | cat`</code><br><code>echo meow # comment</code><br><code>history</code><br><code>history | cat</code></p>
+</blockquote>
+<blockquote>
+<p>当历史指令为空时，依次执行上述四条指令后，后两条指令会分别输出</p>
+</blockquote>
+<blockquote>
+<p><code>echo `ls | cat`</code><br><code>echo meow # comment</code><br><code>history</code></p>
+</blockquote>
+<blockquote>
+<p>与</p>
+</blockquote>
+<blockquote>
+<p><code>echo `ls | cat`</code><br><code>echo meow # comment</code><br><code>history</code><br><code>history | cat</code></p>
+</blockquote>
+<blockquote>
+<p>使用 <code>Up</code> 能够切换到上一条指令（如果上一条指令存在），使用 <code>Down</code> 能够切换到下一条指令（如果下一条指令存在）。能够选择的指令范围为：用户当前输入的指令与 <code>.mosh_history</code> 文件中保存的所有指令。例如在执行了上述四条指令后，用户输入了 <code>echo</code>，此时 <code>Up</code> 应该将指令切换至 <code>history | cat</code>，再次进行三次 <code>Up</code> 后切换至 <code>echo `ls | cat`</code>，此时再次 <code>Up</code> 应保留在该指令（因为已经不存在上一条指令）；再进行四次 <code>Down</code> 后将切换回 <code>echo</code>，此时再次 <code>Down</code> 应保留在该指令（因为不存在下一条指令）。</p>
+</blockquote>
+<ul>
+<li>使用内核实现历史指令，历史指令在内核中</li>
+<li>首先考虑<code>history | cat</code>的情况<ul>
+<li>所有<code>history</code>的识别和执行要在<code>parsecmd</code>之后，这样有<code>&quot;|&quot;</code>的时候才会输出到<code>p[1]</code></li>
+<li>而不是直接进以来就识别<code>history</code></li>
+</ul>
+</li>
+<li>然后所有的指令退出前要加入到历史指令中<ul>
+<li>在<code>exit()</code>前<code>syscall_history_add()</code>一下</li>
+<li>对于内建指令，更早<code>exit()</code>，也要更早<code>history_add()</code></li>
+<li>对于<code>ls | cat | cat</code>这种指令，会在顶层 <code>echo ... 123</code> 的<code>exit()</code>之前<code>history_add()</code></li>
+<li>因此只要是<code>bakcquote == 1</code>，那就不需要<code>history_add()</code></li>
+</ul>
+</li>
+<li>对于<code>history</code>指令本身<ul>
+<li>根据需求，需要在打印历史指令之前就<code>history_add()</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="实现一行多指令"><a href="#实现一行多指令" class="headerlink" title="实现一行多指令"></a>实现一行多指令</h3><blockquote>
+<p>你需要实现使用 ; 将多条指令隔开从而从左至右依顺序执行每条指令的功能。例如：<br><code>ls;ls | cat; echo nihao,mosh; echo `ls; echo meow`</code></p>
+</blockquote>
+<ul>
+<li><code>ls ; ls</code></li>
+<li>第一个<code>ls</code>开一个子进程去执行; 第二个<code>ls</code>父进程执行<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="string">&#x27;;&#x27;</span>:;</span><br><span class="line">    <span class="type">int</span> temp_r = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> ((temp_r = fork()) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> argc;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        wait(temp_r);</span><br><span class="line">        <span class="keyword">return</span> parsecmd(argv, rightpipe, need_ipc_send, need_ipc_recv, condi_or, condi_and, bg, backquote, backpipe);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<h3 id="实现追加重定向"><a href="#实现追加重定向" class="headerlink" title="实现追加重定向"></a>实现追加重定向</h3><blockquote>
+<p>你需要实现 shell 中 &gt;&gt; 追加重定向的功能，例如：<br><code>ls &gt;&gt; file1; ls &gt;&gt; file1</code><br>最后文件 file1 中将会有两次 ls 指令的输出。</p>
+</blockquote>
+<ul>
+<li>识别<code>&gt;&gt;</code>，由于<code>ascii</code>中<code>3</code>被保留，这里返回<code>3</code>；在<code>parsecmd</code>的<code>case 3</code> 中做进一步处理</li>
+<li>然后找到<code>&gt;&gt; file1</code>后面这个字符串所指的文件<ul>
+<li><code>int temp_fd = open(t, O_APPEND | O_RDWR);</code></li>
+<li><code>O_APPEND</code>这个权限在<code>fs的serv.c中的serve_open</code>实现<ul>
+<li>就是把<code>ff-&gt;f_fd.fd_offset = f-&gt;f_size;</code></li>
+<li>识别到<code>O_APPEND</code>打开模式的时候，把文件描述符的偏移量改为文件大小，这样打开之后就自动定位在文件的末尾</li>
+</ul>
+</li>
+<li>如果打开失败说明文件不存在<ul>
+<li>先<code>open(t, O_CREAT)</code>创建这个文件</li>
+<li>然后<code>open(t, O_APPEND | O_RDWR)</code>再次打开  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="number">3</span>:;</span><br><span class="line">    <span class="comment">// 1. 获取文件</span></span><br><span class="line">    c = gettoken(<span class="number">0</span>, &amp;t);</span><br><span class="line">    <span class="type">int</span> fd_temp = open(t, O_APPEND | O_RDWR);</span><br><span class="line">    <span class="keyword">if</span> (fd_temp &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        fd_temp = open(t, O_CREAT);</span><br><span class="line">        fd_temp = open(t, O_APPEND | O_RDWR);</span><br><span class="line">        <span class="comment">// debugf(&quot;两次打开文件%s\n&quot;,t);</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// debugf(&quot;一次就打开文件%s\n&quot;,t);</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>然后把<code>stdout</code>改成指向这个文件,指完之后要关闭文件<ul>
+<li>也就是<code>dup(temp_fd, 1);</code></li>
+<li><code>close(temp_fd);</code>  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 2. 修改输出路径</span></span><br><span class="line">dup(fd_temp, <span class="number">1</span>);</span><br><span class="line">close(fd_temp);</span><br><span class="line"><span class="keyword">break</span>;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+</ul>
+<h3 id="实现引号支持"><a href="#实现引号支持" class="headerlink" title="实现引号支持"></a>实现引号支持</h3><blockquote>
+<p>你需要实现引号支持，比如 <code>echo &quot;ls &gt;&quot;</code>，shell 在解析时需要将双引号内的内容看作是单个字符串。</p>
+</blockquote>
+<ul>
+<li>在<code>gettoken</code>的时候，如果是识别到<code>&#39;\&quot;&#39;</code><ul>
+<li>就直接一直读取到下一个<code>&#39;\&quot;&#39;</code></li>
+<li>期间内的字符串打包成<code>&#39;w&#39;</code>返回  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (*s == <span class="string">&#x27;\&quot;&#x27;</span>) &#123;</span><br><span class="line">        *s++ = <span class="number">0</span>;</span><br><span class="line">        *p1 = s;</span><br><span class="line">        </span><br><span class="line">        s++;</span><br><span class="line">        <span class="keyword">while</span>(*s != <span class="string">&#x27;\&quot;&#x27;</span>) &#123;</span><br><span class="line">            s++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        *s++ = <span class="number">0</span>;</span><br><span class="line">        *p2 = s;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;w&#x27;</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+</ul>
+<h3 id="实现前后台任务管理"><a href="#实现前后台任务管理" class="headerlink" title="实现前后台任务管理"></a>实现前后台任务管理</h3><blockquote>
+<ul>
+<li>你需要支持 mosh 运行后台进程，当命令的末尾添加上 <code>&amp; </code>符号时，该命令应该在后台执行。</li>
+<li>实现 <code>jobs</code> 指令列出当前 shell 中所有后台任务的状态。你需要为任务创建 ID（每次启动 mosh 时，任务从 1 开始编号，每个新增任务编号应加 1），并且通过 <code>jobs</code> 指令输出包括：任务 ID（<code>job_id</code>）、任务的运行状态（<code>status</code>：可能的取值为 <code>Running</code>，<code>Done</code>）、任务的进程 ID（<code>env_id</code>）与运行任务时输入的指令（<code>cmd</code>）。请以 <code>printf(&quot;[%d] %-10s 0x%08x %s&quot;, job_id, status, env_id, cmd)</code> 的格式进行输出。</li>
+<li>实现 <code>fg</code> 将后台任务带回前台继续运行，用户通过 <code>fg &lt;job_id&gt;</code> 的方式将对应任务带回前台。</li>
+<li>实现 <code>kill</code> 指令，用户通过 <code>kill &lt;job_id&gt;</code> 来实现结束后台任务。</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>在 <code>fg</code> 或 <code>kill</code> 指令中，若 <code>job_id</code> 对应的后台任务不存在则输出 <code>printf(&quot;fg: job (%d) do not exist\n&quot;, job_id)</code>，若 <code>job_id</code> 对应的 ID 为 <code>envid</code> 的进程状态不为 <code>Running</code> 则输出 <code>printf(&quot;fg: (0x%08x) not running\n&quot;, envid)</code>。</p>
+</blockquote>
+<blockquote>
+<p>例如：<br><code>sleep 10&amp;</code><br><code>sleep 60 &amp;</code><br><code>jobs</code><br><code># wait for about 10 seconds...</code><br><code>jobs</code></p>
+</blockquote>
+<blockquote>
+<p>依次执行上述指令，则第一个 <code>jobs</code> 应输出（其中进程 ID 的值可能与你本地运行的输出结果不同）：<br><code>[1] Running    0x00003805 sleep 10&amp;</code><br><code>[2] Running    0x00005006 sleep 60 &amp;</code><br>第二个 <code>jobs</code> 应输出：<br><code>[1] Done       0x00003805 sleep 10&amp;</code><br><code>[2] Running    0x00005006 sleep 60 &amp;</code></p>
+</blockquote>
+<ul>
+<li>通过<code>parsecmd</code>中增加<code>case &amp;</code>，来修改<code>background</code>值<ul>
+<li>有<code>background</code>值直接不<code>ipc_recv(0,0,0)</code>,当前<code>sh.b</code>直接<code>exit()</code> <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (bg == <span class="number">1</span>) &#123;</span><br><span class="line">        syscall_add_history(news);</span><br><span class="line">        <span class="built_in">exit</span>();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+<li>对于后台程序<ul>
+<li>开一个子进程托管</li>
+<li>先关信息记录在内核中  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// parsecmd()中</span></span><br><span class="line"><span class="keyword">case</span> <span class="string">&#x27;&amp;&#x27;</span>:</span><br><span class="line">    *bg = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (fork() == <span class="number">0</span>) &#123;</span><br><span class="line">        *bg = <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">return</span> argc;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> argc;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// runcmd()中</span></span><br><span class="line">child = spawn(argv[<span class="number">0</span>], argv);</span><br><span class="line"><span class="comment">// debugf(&quot;创建echo子进程:%x\n&quot;,child);</span></span><br><span class="line"><span class="keyword">if</span> (bg == <span class="number">2</span>) &#123;</span><br><span class="line">    syscall_add_jobs(child,news);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+<li>然后<code>fg</code>和<code>kill</code>指令就调用内核指令去找到这个进程<ul>
+<li><code>fg</code>的话就让当前<code>sh.b</code>等待，直到子进程运行完毕  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (isfg(s) == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">int</span> job_id = atoi(s+<span class="number">3</span>);</span><br><span class="line">    <span class="type">int</span> envid = syscall_find_envid(job_id);</span><br><span class="line">    <span class="keyword">if</span> (envid != <span class="number">-1</span>) &#123;</span><br><span class="line">        wait(envid);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    syscall_add_history(news);</span><br><span class="line">    <span class="built_in">exit</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><code>kill</code>的话直接杀死进程，结束<code>sh.b</code>  <div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (iskill(s) == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">int</span> job_id = atoi(s+<span class="number">5</span>);</span><br><span class="line">    syscall_kill_job(job_id);</span><br><span class="line"></span><br><span class="line">    syscall_add_history(news);</span><br><span class="line">    <span class="built_in">exit</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Chap.3 OS-挑战性任务shell</li>
+        <li><strong>Author:</strong> Toryn</li>
+        <li><strong>Created at
+                :</strong> 2024-06-28 09:59:54</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-06-28 10:46:31
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://linboyan-trc.github.io/2024/06/28/Chap-3-OS-challenge-shell/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+            
+
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/OS/">#OS</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/10/10/Chap-2-%E4%B8%AA%E6%80%A7%E5%8C%96%E4%BF%AE%E6%94%B9Redefine%E4%B8%BB%E9%A2%98/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Chap.2 个性化修改Redefine主题</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container">
+                <div class="comments-container pjax">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;Comments
+    </div>
+    
+
+        
+            
+ 
+    <div id="waline"></div>
+    <script type="module"  data-swup-reload-script>
+        import { init } from '/js/libs/waline.mjs';
+
+        function loadWaline() {
+            init({
+                el: '#waline',
+                serverURL: 'https://example.example.com',
+                lang: 'zh-CN',
+                dark: 'body[class~="dark-mode"]',
+                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
+            });
+        }
+
+        if ('true') {
+            const loadWalineTimeout = setTimeout(() => {
+                loadWaline();
+                clearTimeout(loadWalineTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadWaline);
+        }
+        
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Chap.3 OS-挑战性任务shell</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E5%86%85%E5%AE%B9"><span class="nav-text">实验内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Shell-%E6%8C%91%E6%88%98%E6%80%A7%E4%BB%BB%E5%8A%A1"><span class="nav-text">Shell 挑战性任务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0%E8%AF%A6%E8%A7%A3"><span class="nav-text">功能实现详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%8D%E5%B8%A6-b%E5%90%8E%E7%BC%80%E6%8C%87%E4%BB%A4"><span class="nav-text">实现不带.b后缀指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%8C%87%E4%BB%A4%E6%9D%A1%E4%BB%B6%E6%89%A7%E8%A1%8C"><span class="nav-text">实现指令条件执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%9B%B4%E5%A4%9A%E6%8C%87%E4%BB%A4"><span class="nav-text">实现更多指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%8F%8D%E5%BC%95%E5%8F%B7"><span class="nav-text">实现反引号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%B3%A8%E9%87%8A%E5%8A%9F%E8%83%BD"><span class="nav-text">实现注释功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%86%E5%8F%B2%E6%8C%87%E4%BB%A4"><span class="nav-text">实现历史指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%80%E8%A1%8C%E5%A4%9A%E6%8C%87%E4%BB%A4"><span class="nav-text">实现一行多指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E8%BF%BD%E5%8A%A0%E9%87%8D%E5%AE%9A%E5%90%91"><span class="nav-text">实现追加重定向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%BC%95%E5%8F%B7%E6%94%AF%E6%8C%81"><span class="nav-text">实现引号支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%89%8D%E5%90%8E%E5%8F%B0%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="nav-text">实现前后台任务管理</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Toryn</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
